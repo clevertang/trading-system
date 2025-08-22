@@ -1,0 +1,29 @@
+{
+  "awsAuthRefresh": "aws sso login --profile AWSBedrockRole",
+  "env": {
+    "CLAUDE_CODE_USE_BEDROCK": "true",
+    "ANTHROPIC_MODEL": "us.anthropic.claude-sonnet-4-20250514-v1:0",
+    "AWS_PROFILE": "AWSBedrockRole",
+    "DISABLE_PROMPT_CACHING": "false",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git checkout:*)",
+      "Bash(git pull:*)",
+      "Bash(ls:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Read(./config/credentials.json)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(curl:*)"
+    ]
+  }
+}
