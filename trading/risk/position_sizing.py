@@ -53,7 +53,7 @@ def check_margin_requirements(orders: pd.DataFrame, available_cash: float,
     total_cash_needed = (buy_orders["qty"] * buy_orders["price"]).sum()
     buying_power = available_cash * margin_multiplier
     
-    return total_cash_needed <= buying_power
+    return bool(total_cash_needed <= buying_power)
 
 
 def validate_position_concentration(orders: pd.DataFrame, portfolio_value: float,

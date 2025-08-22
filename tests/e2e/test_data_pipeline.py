@@ -38,11 +38,22 @@ class MockYFinanceFeed(MarketDataFeed):
         for day in event_days:
             prices[day:] *= np.random.choice([0.95, 1.05])  # 5% moves
         
+        # Generate proper OHLC data that follows market logic
+        opens = prices * (1 + np.random.normal(0, 0.002, n_days))
+        closes = prices
+        
+        # Ensure High >= max(Open, Close) and Low <= min(Open, Close)
+        high_base = np.maximum(opens, closes)
+        low_base = np.minimum(opens, closes)
+        
+        highs = high_base * (1 + np.abs(np.random.normal(0, 0.01, n_days)))
+        lows = low_base * (1 - np.abs(np.random.normal(0, 0.01, n_days)))
+        
         self.data = pd.DataFrame({
-            "Open": prices * (1 + np.random.normal(0, 0.002, n_days)),
-            "High": prices * (1 + np.abs(np.random.normal(0, 0.01, n_days))),
-            "Low": prices * (1 - np.abs(np.random.normal(0, 0.01, n_days))),
-            "Close": prices,
+            "Open": opens,
+            "High": highs,
+            "Low": lows,
+            "Close": closes,
             "Volume": np.random.randint(1000000, 5000000, n_days)
         }, index=trading_days)
     
